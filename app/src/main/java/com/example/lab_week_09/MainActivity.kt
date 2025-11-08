@@ -1,6 +1,7 @@
 package com.example.lab_week_09
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -25,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -80,6 +82,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 }
 @Composable
 fun Home(navigateFromHomeToResult: (String) -> Unit) {
+    val context = LocalContext.current
+
     val listData = remember { mutableStateListOf(
         Student("Tanu"),
         Student("Tina"),
@@ -96,6 +100,8 @@ fun Home(navigateFromHomeToResult: (String) -> Unit) {
             if (inputField.value.name.isNotBlank()) {
                 listData.add(inputField.value)
                 inputField.value = Student("")
+            } else if(inputField.value.name.isBlank()){
+                Toast.makeText(context, "Nama tidak boleh kosong!", Toast.LENGTH_SHORT).show()
             }
         },
         { navigateFromHomeToResult(listData.toList().toString()) }
